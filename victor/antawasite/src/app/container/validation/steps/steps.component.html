@@ -1,0 +1,275 @@
+<div class="main-content">
+    <div class="container-fluid">
+
+        <!--
+            <img src="data:image/jpg;base64,{image}}">
+       -->
+
+        <div class="row">
+
+
+            <div class="col-md-12">
+                <div class="card">
+
+                    <div class="header">
+                        <h4 class="title">Steps</h4>
+                    </div>
+                    <div class="card-body">
+
+                        <ul class="nav nav-tabs">
+                            <li class="active">
+                                <div class="form-group"></div><a data-toggle="tab" href="#home">Conductor</a>
+                            </li>
+                            <li>
+                                <div class="form-group"></div><a data-toggle="tab" href="#menu1">Documentos</a>
+                            </li>
+                            <li>
+                                <div class="form-group"></div><a data-toggle="tab" href="#menu2">Validación</a>
+                            </li>
+                        </ul>
+
+
+                        <div class="tab-content" style="padding:12px">
+                            <div id="home" class="tab-pane fade in active">
+                                <div class="card">
+                                    <div class="card-body">
+
+                                        <div class="card">
+
+                                            <div class="header">
+                                                <h4 class="title">Driver Profile</h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="content">
+                                                    <form>
+                                                        <div class="row">
+                                                            <div class="col-md-5">
+                                                                <div class="form-group">
+                                                                    <label>Type</label>
+                                                                    <input type="text" class="form-control" disabled
+                                                                        placeholder="Company" value="{{profile.name}}">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label for="exampleInputEmail1">Email address</label>
+                                                                    <input type="email" class="form-control" disabled
+                                                                        placeholder="Email address" value="{{user.username}}">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label>Names</label>
+                                                                    <input type="text" class="form-control" disabled
+                                                                        placeholder="Company" value="{{user.names}}">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label>Last Names</label>
+                                                                    <input type="text" class="form-control" disabled
+                                                                        placeholder="Last Name" value="{{user.lastNames}}">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row" style="display: none">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label>Address</label>
+                                                                    <input type="text" class="form-control" placeholder="Home Address"
+                                                                        value="">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row" style="display: none">
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label>City</label>
+                                                                    <input type="text" class="form-control" placeholder="City"
+                                                                        value="Mike">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <div class="form-group">
+                                                                    <label>Country</label>
+                                                                    <input type="text" class="form-control" placeholder="Country"
+                                                                        value="Andrew">
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+
+
+                                                    </form>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="menu1" class="tab-pane fade">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="card">
+
+                                            <div class="header">
+                                                <h4 class="title">Validación de documentos</h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="content">
+
+
+                                                    <table class="table table-hover">
+                                                        <tr>
+                                                            <th scope="col">N°</th>
+
+                                                            <th scope="col">
+                                                                Parámetro
+                                                            </th>
+                                                            <th scope="col">
+                                                                Valoración
+                                                            </th>
+                                                        </tr>
+                                                        <tr *ngFor="let doc of documents;let i = index;">
+                                                            <td scope="row">
+                                                                {{i+1}}
+                                                            </td>
+                                                            <td>
+                                                                {{doc.docType}}
+
+
+
+                                                                <i class=" shadows fa fa-download" (click)="getDocumentsContent(doc)"></i>
+                                                            </td>
+                                                            <td>
+                                                                <div class="btn-group btn-group-sm" role="group"
+                                                                    aria-label="Validación">
+                                                                    <div *ngIf="doc.status=='APR'" class="alert alert-primary"
+                                                                        role="alert">
+                                                                        Válido
+                                                                    </div>
+                                                                    <div *ngIf="doc.status=='NAP'" class="alert alert-dark"
+                                                                        role="alert">
+                                                                        No aceptado
+                                                                    </div>
+                                                                    <button type="button" *ngIf="doc.status=='SNV'"
+                                                                        class="btn btn-success btn-sm" (click)="changeStatusDocument('APR',doc)">Aceptar</button>
+
+                                                                    <button type="button" *ngIf="doc.status=='SNV'"
+                                                                        class="btn btn-warning btn-sm" (click)="changeStatusDocumentTmp('PRE', doc)">Rechazar</button>
+
+                                                                    <div class="row">
+
+
+                                                                        <div class="form-group" *ngIf="doc.status=='PRE'">
+                                                                            <label for="inputsm">Razón: </label>
+
+                                                                            <select class="form-control input-sm"
+                                                                                [(ngModel)]="doc.comment">
+                                                                                <option *ngFor='let razon of noAceptList'
+                                                                                    [value]="razon">
+                                                                                    {{razon}}
+                                                                                </option>
+                                                                            </select>
+
+                                                                            <span class="input-group-btn">
+                                                                                <button type="button" class="btn btn-success btn-sm"
+                                                                                    (click)="changeStatusDocument('NAP',doc)">Aceptar</button>
+
+                                                                                <button type="button" class="btn btn-warning btn-sm"
+                                                                                    (click)="changeStatusDocumentTmp('SNV', doc)">Cancelar</button>
+                                                                            </span>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                  
+                                                    <img src="data:image/jpeg;base64,{{this.image}}">
+                                         
+                                                </div>
+                                            </div>
+                                          
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="menu2" class="tab-pane fade">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="card">
+
+                                            <div class="header">
+                                                <h4 class="title">Validación Técnica</h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="content">
+                                                    <table class="table table-hover">
+                                                        <tr>
+                                                            <th scope="col">N°</th>
+
+                                                            <th scope="col">
+                                                                Parámetro
+                                                            </th>
+                                                            <th scope="col">
+                                                                Valoración
+                                                            </th>
+                                                        </tr>
+                                                        <tr *ngFor="let val of validations;let i = index;">
+                                                            <td scope="row">
+                                                                {{i+1}}
+                                                            </td>
+                                                            <td>
+                                                                {{val.evaluationParameter.name}}
+                                                            </td>
+                                                            <td>
+                                                                <div class="btn-group btn-group-sm" role="group"
+                                                                    aria-label="Validación">
+                                                                    <div *ngIf="val.status=='APR'" class="alert alert-primary"
+                                                                        role="alert">
+                                                                        Válido
+                                                                    </div>
+                                                                    <div *ngIf="val.status=='NAP'" class="alert alert-dark"
+                                                                        role="alert">
+                                                                        No aceptado
+                                                                    </div>
+
+                                                                    <button type="button" *ngIf="val.status=='SNV'"
+                                                                        class="btn btn-success btn-sm" (click)="changeStatusParameter('APR',val.id)">Aceptar</button>
+
+                                                                    <button type="button" *ngIf="val.status=='SNV'"
+                                                                        class="btn btn-warning btn-sm" (click)="changeStatusParameter('NAP',val.id)">Rechazar</button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>

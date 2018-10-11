@@ -1,0 +1,23 @@
+page-register-information {
+    ion-buttons[start] {
+        order: 2;
+      }
+
+      ion-fab[middlef] {
+        margin-top: -28px;
+        top: 25%;
+    }
+
+    ion-fab[middles] {
+        margin-top: -28px;
+        top: 55%;
+    }
+
+    ion-col{
+        padding-top: 10px;
+       
+    }
+    ion-col img{
+        width:24px;
+    }
+}

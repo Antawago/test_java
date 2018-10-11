@@ -1,0 +1,29 @@
+<ion-content padding>
+    
+  <ion-list radio-group  [(ngModel)]="driverType" name="driverType" required>
+    <ion-list-header>
+      <h1>{{'DRIVER_TYPE' | translate}}</h1>
+    </ion-list-header>
+    <ion-item style=" text-align: center">
+      <img width="80" height="80" src="assets/icon/icons8-conductor-80.png" />
+      <br/>
+    </ion-item>
+
+    <ion-item>
+
+      <ion-label> {{'DRIVER_TYPE2_INFOR' | translate}} </ion-label>
+      <ion-radio checked="true" value="DO"  ></ion-radio>
+
+    </ion-item>
+    <ion-item>
+
+      <ion-label> {{'DRIVER_TYPE1_INFOR' | translate}} </ion-label>
+      <ion-radio value="OD" ></ion-radio>
+    </ion-item>
+
+  </ion-list>
+
+  <br/>
+  <button ion-button round outline (click)="saveType()">{{'CONTINUE' | translate}}</button>
+
+</ion-content>

@@ -1,0 +1,25 @@
+<div class="container">
+  <div class="card card-container">
+      <!-- <img class="profile-img-card" src="//lh3.googleusercontent.com/-6V8xOA6M7BA/AAAAAAAAAAI/AAAAAAAAAAA/rzlHcD0KYwo/photo.jpg?sz=120" alt="" /> -->
+      <img id="profile-img" class="profile-img-card" src="assets/img/logo004.PNG" />
+      <p id="profile-name" class="profile-name-card"></p>
+      <form class="form-signin" name="form-signin" onsubmit="form-signin.valid && login()" #f="ngForm" >
+            <div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
+          <span id="reauth-email" class="reauth-email"></span>
+          <input type="email" email [(ngModel)]="user.username" name="username" class="form-control" placeholder="Email address" required autofocus>
+          <input type="password" [(ngModel)]="user.password" name="password" class="form-control" placeholder="Password" required>
+          <div class="checkbox">
+            <input id="checkbox6" type="checkbox">
+            <label for="checkbox6">
+Remember me
+            </label>
+        </div>
+          
+          <button class="btn btn-lg btn-primary btn-block btn-signin"  (click)="login()">Login</button>
+          <button class="btn btn-lg btn-primary btn-block btn-register" (click)="register()" type="button">Register</button>
+      </form><!-- /form -->
+      <a href="#" class="forgot-password">
+          Forgot the password?
+      </a>
+  </div><!-- /card-container -->
+</div><!-- /container -->

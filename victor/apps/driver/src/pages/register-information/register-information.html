@@ -1,0 +1,173 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title *ngIf="driverProfile.status=='RGT'">{{'DOCUMENTS_TITLE' | translate}}</ion-title>
+    <ion-title *ngIf="driverProfile.status=='VLD'">{{'VALIDATION_TITLE' | translate}}</ion-title>
+    <ion-title *ngIf="driverProfile.status=='DEV'">{{'VALIDATION_OBSERVATION' | translate}}</ion-title>
+
+    <ion-buttons start>
+      <button ion-button icon-only (click)="goDriverType()" *ngIf="driverProfile.status=='RGT' && canChangeType">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-buttons end></ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <div *ngIf="driverProfile.status=='DEV'">
+    <ion-item style=" text-align: center">
+      <img src="assets/img/chat.png">
+    </ion-item>
+
+    <ion-list>
+      <ion-item *ngFor="let doc of documentsError" style="white-space: nowrap;">{{doc.docType | translate}} - {{doc.comment}}</ion-item>
+    </ion-list>
+
+  </div>
+  <div *ngIf="driverProfile.status=='RGT'">
+
+    <div *ngIf="false && driverProfile.type=='OD'">
+      <h1>{{'OWNER_DRIVER' | translate}}</h1>
+    </div>
+
+
+    <div *ngIf="false && driverProfile.type=='DO'">
+      <h1>{{'ONLY_DRIVER' | translate}}</h1>
+    </div>
+
+    <!-- License without document-->
+    <ion-fab center middlef *ngIf="!licUp && (driverProfile.type=='OD' || driverProfile.type=='DO')">
+      {{'LIC'|translate}}.
+      <button *ngIf="!licUp" ion-fab color="primary">
+        <ion-icon name="document"></ion-icon>
+      </button>
+      <ion-fab-list side="left">
+        <button *ngIf="!licUp" ion-fab color="light" (click)="getPicture('LIC')">
+          <ion-icon name="camera"></ion-icon>
+        </button>
+
+      </ion-fab-list>
+      <ion-fab-list side="right">
+        <button *ngIf="!licUp" ion-fab color="dark" (click)="chooseDocs('LIC')">
+          <ion-icon name="folder"></ion-icon>
+        </button>
+
+      </ion-fab-list>
+    </ion-fab>
+
+    <!-- License with document-->
+    <ion-fab center middlef *ngIf="licUp && (driverProfile.type=='OD' || driverProfile.type=='DO')">
+      {{'LIC'|translate}}..
+      <button ion-fab color="secondary">
+        <ion-icon name="checkmark"></ion-icon>
+      </button>
+      <ion-fab-list side="left">
+        <button ion-fab color="light" (click)="viewFile('LIC')">
+          <ion-icon name="search"></ion-icon>
+        </button>
+      </ion-fab-list>
+      <ion-fab-list side="right">
+        <button ion-fab color="dark" (click)="deleteFile('LIC')">
+          <ion-icon name="trash"></ion-icon>
+        </button>
+      </ion-fab-list>
+    </ion-fab>
+
+
+    <ion-fab center middles *ngIf="!matUp && driverProfile.type=='DO'">
+      {{'MAT'|translate}}.
+      <button ion-fab color="blue">
+        <ion-icon name="add"></ion-icon>
+      </button>
+      <button *ngIf="false" ion-fab color="primary">
+        <ion-icon name="paper"></ion-icon>
+      </button>
+      <ion-fab-list side="left">
+        <button ion-fab color="light" (click)="getPicture('MAT')">
+          <ion-icon name="camera"></ion-icon>
+        </button>
+      </ion-fab-list>
+      <ion-fab-list side="right">
+        <button ion-fab color="dark" (click)="chooseDocs('MAT')">
+          <ion-icon name="folder"></ion-icon>
+        </button>
+      </ion-fab-list>
+    </ion-fab>
+
+    <ion-fab center middles *ngIf="matUp && driverProfile.type=='DO'">
+      {{'MAT'|translate}}..
+      <button ion-fab color="secondary">
+        <ion-icon name="checkmark"></ion-icon>
+      </button>
+      <ion-fab-list side="left">
+        <button ion-fab color="light" (click)="viewFile('MAT')">
+          <ion-icon name="search"></ion-icon>
+        </button>
+      </ion-fab-list>
+      <ion-fab-list side="right">
+        <button ion-fab color="dark" (click)="deleteFile('MAT')">
+          <ion-icon name="trash"></ion-icon>
+        </button>
+      </ion-fab-list>
+    </ion-fab>
+    <form ngNoForm >
+      <input id="docsUpload" name="file" type="file" (change)="uploadDocs($event)">
+      <input type="reset" id="formDocUpdate"/>
+    </form>
+  </div>
+
+  <div *ngIf="driverProfile.status=='VLD'">
+    <br />
+    <ion-item style=" text-align: center">
+      <img src="assets/img/id-card.png">
+    </ion-item>
+    <ion-grid>
+      <ion-row>
+        <ion-col col-2>
+          <img src="assets/img/checked.png" />
+        </ion-col>
+        <ion-col style="color:cadetblue">
+          Registro
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col col-2>
+          <img src="assets/img/checked.png" />
+        </ion-col>
+        <ion-col style="color:cadetblue">
+          Validación
+        </ion-col>
+      </ion-row>
+
+
+      <ion-row>
+        <ion-col col-2>
+          <img style="width:24px;" src="assets/img/no-checked.png" />
+        </ion-col>
+        <ion-col style="color:silver">
+          Revisión
+        </ion-col>
+      </ion-row>
+
+      
+    </ion-grid>
+
+
+
+
+  </div>
+
+</ion-content>
+
+<ion-footer>
+  <button *ngIf="driverProfile.status=='RGT'" ion-button round color="secondary" (click)="sendValid()">{{'SEND_VALID' |
+    translate}}</button>
+  <button *ngIf="driverProfile.status=='DEV'" ion-button round color="secondary" (click)="changeProfileStatus()">{{'UP_DOCUMENTS'
+    | translate}}</button>
+  <button *ngIf="driverProfile.status=='VLD'" ion-button round color="secondary" href="#" onclick="window.open('https://www.123test.com', '_system');">{{'TEST_EVAL'
+        | translate}}</button>
+</ion-footer>

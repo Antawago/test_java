@@ -1,0 +1,45 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="header">
+
+            <h4 class="title">Validations List     <i  (click)="ngOnInit()" class="shadows fa fa-refresh" aria-hidden="true" title="Descargar" ></i></h4>
+            <p class="category">new or in process users</p>
+          </div>
+          <div class="content table-responsive table-full-width">
+           
+            <table class="table table-striped">
+              <thead>
+                <th>N°</th>
+                <th>Usuario</th>
+                <th>Tipo</th>
+                <th>email</th>
+                <th></th>
+                <th></th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let pu of validationList;let i = index;">
+                  <td>{{i+1}}</td>
+                  <td>{{pu.user.lastNames}} {{pu.user.names}} <div class="progress">
+                      <div class="progress-bar" role="progressbar" style="width: 35%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div></td>
+                  <td>{{pu.profile.name}}</td>
+                  <td>{{pu.user.username}}</td>
+                  <td></td>
+                  <td>
+                    <button type="button" (click)="validateUser(pu)" class="btn btn-info">validate</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

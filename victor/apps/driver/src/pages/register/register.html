@@ -1,0 +1,89 @@
+<ion-content>
+  <!-- Logo -->
+  <div padding text-center class="header">
+    <div class="logo secondary-bg">
+      <!-- <img src="assets/img/login.png" /> -->
+      <ion-icon name="ios-car" color="light"></ion-icon>
+    </div>
+    <h2 ion-text color="light">{{'REGISTER' | translate}}</h2>
+  </div>
+  <form [formGroup]="registerForm" (ngSubmit)="registerForm.valid && signup(registerForm.value)">
+    <ion-list class="list-form" padding>
+      <ion-item>
+        <ion-label stacked>{{'NAMES'| translate}}</ion-label>
+        <ion-input type="text" formControlName="names"></ion-input>
+      </ion-item>
+      <ion-item no-lines *ngIf="(registerForm.get('names').hasError('pattern') || registerForm.get('names').hasError('required')) && registerForm.get('names').touched">
+        <div class="error" *ngIf="registerForm.get('names').hasError('required') && registerForm.get('names').touched">
+          Por favor ingrese un valor.
+        </div>
+        <div class="error" *ngIf="registerForm.get('names').hasError('pattern') && registerForm.get('names').touched">
+          Formato no válido.
+        </div>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked>{{'LASTNAMES'| translate}}</ion-label>
+        <ion-input type="text" formControlName="lastNames"></ion-input>
+      </ion-item>
+      <ion-item no-lines *ngIf="(registerForm.get('lastNames').hasError('pattern') || registerForm.get('lastNames').hasError('required')) && registerForm.get('lastNames').touched">
+        <div class="error" *ngIf="registerForm.get('lastNames').hasError('required') && registerForm.get('lastNames').touched">
+          Por favor ingrese un valor.
+        </div>
+        <div class="error" *ngIf="registerForm.get('lastNames').hasError('pattern') && registerForm.get('lastNames').touched">
+          Formato no válido.
+        </div>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked>{{'EMAIL_ADDRESS'| translate}}</ion-label>
+        <ion-input type="email" formControlName="username"></ion-input>
+      </ion-item>
+      <ion-item no-lines *ngIf="(registerForm.get('username').hasError('email') || registerForm.get('username').hasError('required')) && registerForm.get('username').touched">
+        <div class="error" *ngIf="registerForm.get('username').hasError('required') && registerForm.get('username').touched">
+          Por favor ingrese su correo electrónico
+        </div>
+        <div class="error" *ngIf="registerForm.get('username').hasError('email') && registerForm.get('username').touched">
+          Dirección de correo electrónico no válida
+        </div>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>{{'PASSWORD'| translate}} (MIN 6 CHAR)</ion-label>
+        <ion-input type="password" formControlName="password"></ion-input>
+      </ion-item>
+      <ion-item no-lines *ngIf="(registerForm.get('password').hasError('minlength') || registerForm.get('password').hasError('required')) && registerForm.get('password').touched">
+        <div class="error" *ngIf="registerForm.get('password').hasError('required') && registerForm.get('password').touched">
+          Por favor ingrese un valor.
+        </div>
+        <div class="error" *ngIf="registerForm.get('password').hasError('minlength') && registerForm.get('password').touched">
+          Mínimo 6 caracteres
+        </div>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>{{'PHONE_NUMBER'| translate}}</ion-label>
+        <ion-input type="tel" formControlName="cellphone" aria-placeholder="0992343221"></ion-input>
+      </ion-item>
+      <ion-item no-lines *ngIf="(registerForm.get('cellphone').hasError('maxlength') || registerForm.get('cellphone').hasError('minlength')  || registerForm.get('cellphone').hasError('pattern') || registerForm.get('cellphone').hasError('required')) && registerForm.get('cellphone').touched">
+        <div class="error" *ngIf="registerForm.get('cellphone').hasError('required') && registerForm.get('cellphone').touched">
+          Por favor ingrese un valor.
+        </div>
+        <div class="error" *ngIf="registerForm.get('cellphone').hasError('pattern') && registerForm.get('cellphone').touched">
+          Formato no válido.
+        </div>
+        <div class="error" *ngIf="registerForm.get('cellphone').hasError('minlength') && registerForm.get('cellphone').touched">
+          Mínimo 10 caracteres
+        </div>
+        <div class="error" *ngIf="registerForm.get('cellphone').hasError('maxlength') && registerForm.get('cellphone').touched">
+          Máximo 10 caracteres
+        </div>
+      </ion-item>
+      <ion-item>
+        <button type="submit" padding ion-button block>{{'REGISTER' | translate}}</button>
+      </ion-item>
+
+    </ion-list>
+  </form>
+</ion-content>
+<ion-footer>
+  <button ion-button clear block (click)="login()">{{'LOGIN' | translate }}</button>
+</ion-footer>

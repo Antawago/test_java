@@ -1,0 +1,32 @@
+<ion-content>
+  <div padding text-center class="header">
+    <div class="logo secondary-bg">
+      <!-- <img src="assets/img/login.png" /> -->
+      <ion-icon name="ios-car" color="light"></ion-icon>
+    </div>
+    <h2 ion-text color="light">{{'LOGIN' | translate}}</h2>
+  </div>
+  <form [formGroup]="authForm" (ngSubmit)="authForm.valid && login(authForm.value)">
+    <ion-list class="list-form" padding>
+      <ion-item>
+        <ion-label stacked>{{'EMAIL_ADDRESS'| translate}}</ion-label>
+        <ion-input type="email" formControlName="email" ></ion-input>
+
+      </ion-item>
+      <ion-item *ngIf="authForm.controls.email.hasError('email') && authForm.controls.email.touched">
+        <ion-label class="validation-error">{{'EMAIL_BAD_FORMAT' | translate}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>{{'PASSWORD'| translate}}</ion-label>
+        <ion-input type="password" formControlName="password" ></ion-input>
+        <button ion-button clear item-right (click)="reset()">{{'FORGOT' | translate}}</button>
+      </ion-item>
+      <ion-item>
+        <button type="submit" padding ion-button block>{{'LOGIN' | translate}}</button>
+      </ion-item>
+    </ion-list>
+  </form>
+</ion-content>
+<ion-footer *ngIf="isRegisterEnabled">
+  <button ion-button clear block (click)="signup()">{{'REGISTER' | translate}}</button>
+</ion-footer>
