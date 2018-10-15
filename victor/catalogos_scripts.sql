@@ -4,6 +4,10 @@
     
     INSERT INTO public.evaluation_parameter(parameter_name, code, status)
     VALUES ('Validar Puntos de licencia', 'PUNLIC', 'ACT');
+	
+	INSERT INTO public.evaluation_parameter(parameter_name, code, status)
+    VALUES ('Test Psicológico','PSTEST','ACT');
+	
 
 
     INSERT INTO public.profile(code, name, status)
