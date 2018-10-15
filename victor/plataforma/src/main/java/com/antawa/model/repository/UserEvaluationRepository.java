@@ -27,8 +27,11 @@ public interface UserEvaluationRepository extends JpaRepository<UserEvaluation, 
 	 * @param idUser
 	 * @return
 	 */
-	@Query("SELECT ue FROM UserEvaluation ue INNER JOIN ue.evaluationParameter WHERE ue.user.id=:idUser order by ue.id")
+	@Query("SELECT ue FROM UserEvaluation ue INNER JOIN ue.evaluationParameter  WHERE ue.user.id=:idUser order by ue.id")
 	List<UserEvaluation> findByUserId(@Param("idUser") Long idUser);
+	
+	@Query("SELECT ue FROM UserEvaluation ue INNER JOIN ue.evaluationParameter ep WHERE ep.code=:parameterCode and  ue.user.id=:idUser")
+	UserEvaluation findByUserIdAndEvaluationParameterCode(@Param("idUser") Long idUser, @Param("parameterCode") String parameterCode);
 
 	@Query("SELECT ue.evaluationParameter.id FROM UserEvaluation ue WHERE ue.user.id=:idUser")
 	List<Long> findEvaluationParametersByUserId(@Param("idUser") Long idUser);

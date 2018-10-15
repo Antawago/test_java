@@ -21,6 +21,7 @@ import javax.validation.constraints.NotNull;
 
 import com.antawa.enums.EvaluationStatusEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * @author Victor Quimbiamba <vicanall@gmail.com>.
@@ -84,7 +85,7 @@ public class UserEvaluation implements Serializable {
 	/**
 	 * @return the user
 	 */
-	@JsonIgnore
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	public User getUser() {
 		return user;
 	}

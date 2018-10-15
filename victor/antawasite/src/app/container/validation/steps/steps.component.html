@@ -12,7 +12,8 @@
                 <div class="card">
 
                     <div class="header">
-                        <h4 class="title">Steps</h4>
+                        <h4 class="title"></h4>
+                        <button type="button"   class="btn btn-warning btn-sm" (click)="validUser()">Validar Usuario</button>
                     </div>
                     <div class="card-body">
 
@@ -148,7 +149,7 @@
 
 
 
-                                                                <i class=" shadows fa fa-download" (click)="getDocumentsContent(doc)"></i>
+                                                                <i title="Ver Documento" class="shadows fa fa-eye" (click)="getDocumentsContent(doc)"></i>
                                                             </td>
                                                             <td>
                                                                 <div class="btn-group btn-group-sm" role="group"
@@ -196,7 +197,10 @@
                                                         </tr>
                                                     </table>
                                                   
-                                                    <img src="data:image/jpeg;base64,{{this.image}}">
+                                                    <img *ngIf="viewImage"  height="500" width="400" src="data:image/jpeg;base64,{{this.image}}"/>
+                                 
+                                                    <div *ngIf="viewDocument" [innerHTML]="sanitizer.bypassSecurityTrustHtml(document)" style="width: 100%"></div>
+                                                  
                                          
                                                 </div>
                                             </div>

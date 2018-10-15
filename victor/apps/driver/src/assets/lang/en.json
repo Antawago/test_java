@@ -60,5 +60,6 @@
     "VALIDATION_OBSERVATION":"observations",
     "LIC":"Licencia",
     "MAT":"Enrollment",
-    "UNDEFINED_ERROR":"Error indefinido"
+    "UNDEFINED_ERROR":"Error indefinido",
+    "WELLCOME":"Wellcome"
 }

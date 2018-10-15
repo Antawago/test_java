@@ -55,10 +55,12 @@ public class UserDocumentServiceImpl implements UserDocumentService {
 	public void saveDocument(DocumentStructureVO doc, User usr) throws ServiceException {
 		Long id = userDocumentRepository.findIdByTypeAndUuid(doc.getType(), doc.getUuid());
 		int index = doc.getContent().indexOf("base64");
-		String emptyContent = (doc.getContent().substring(index + 7));
+		String emptyContent = doc.getContent();
+		if (index > 0) {
+			emptyContent = (doc.getContent().substring(index + 7));
+		}
 
 		if (id != null) {
-
 			userDocumentRepository.updateById(EvaluationStatusEnum.SIN_VALORACION.getCode(), emptyContent,
 					doc.getFormat(), id);
 		} else {
@@ -130,7 +132,7 @@ public class UserDocumentServiceImpl implements UserDocumentService {
 
 	@Override
 	public void findByUserId(Long id) throws ServiceException {
-		userDocumentRepository.findByUserId(id);
+		userDocumentRepository.findByUserIdOrderById(id);
 	}
 
 	@Override

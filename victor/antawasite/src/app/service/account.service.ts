@@ -21,13 +21,20 @@ export class AccountService {
     return this.callGetService('/validation/getDocumentDriver?id=' + id, "getDocumentDriver(id: any)");
   }
 
-  getDocumentsContent(id: any) {
-    return this.callGetService('/validation/getDocumentsContent?id=' + id, "getDocumentsContent(id: any)");
+  getUser(uuid: any) {
+    return this.callGetService('/account/getUser?uuid=' + uuid, "getUser(uuid: any)");
+  }
+
+  getParameterTestEvaluation(uuid: any) {
+    return this.callGetService('/validation/getTestEvaluationParameter?uuid=' + uuid, "getParameterTestEvaluation(uuid: any)");
   }
 
 
 
-  //
+  getDocumentsContent(id: any) {
+    return this.callGetService('/validation/getDocumentsContent?id=' + id, "getDocumentsContent(id: any)");
+  }
+
   getValidationDriver(id: any) {
     return this.callGetService('/validation/getValidationDriver?id=' + id, "getValidationDriver(id: any)");
   }
@@ -35,6 +42,10 @@ export class AccountService {
   updateDocumentStatus(status: any, idDoc: any, uuid: any, comment: any, upk: any) {
     let doc = { "idDoc": idDoc, "status": status, "uuid": uuid, "comment": comment, "upk": upk };
     return this.callPostService("/validation/updateDocumentStatus", doc, "updateDocumentStatus(status:any,idDoc:any)");
+  }
+
+  updateStatusUserProfile(userProfile:any) {
+    return this.callPostService("/users/updateProfileStatus", userProfile, "updateStatusUserProfile(userProfile:any)");
   }
 
   updateParameterStatus(status: any, idDoc: any, uuid: any, comment: any, upk: any) {

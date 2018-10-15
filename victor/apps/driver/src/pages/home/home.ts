@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, ModalController, AlertController } from 'ionic-angular';
+import { NavController, ModalController, AlertController, Platform } from 'ionic-angular';
 import { DriverService } from '../../services/driver-service';
-import { POSITION_INTERVAL, PLAY_AUDIO_ON_REQUEST, AUDIO_PATH } from "../../services/constants";
+import { POSITION_INTERVAL, PLAY_AUDIO_ON_REQUEST, AUDIO_PATH, WELCOME } from "../../services/constants";
 import { Geolocation } from '@ionic-native/geolocation';
 import { TranslateService } from '@ngx-translate/core';
+import { Diagnostic } from '@ionic-native/diagnostic';
 
 declare var google: any;
 
@@ -19,14 +20,46 @@ export class HomePage {
   isDriverAvailable: any = false;
   positionTracking: any;
   dealStatus: any = false;
+  wellcomeOk: any;
+  isAvailable:any;
+
 
   public job: any;
   //public remainingTime = DEAL_TIMEOUT;
 
-  constructor(public nav: NavController, public driverService: DriverService, public modalCtrl: ModalController, 
-    public alertCtrl: AlertController, public geolocation: Geolocation, public translate: TranslateService) { }
+  constructor(public nav: NavController, public driverService: DriverService, public modalCtrl: ModalController,
+    public alertCtrl: AlertController, public geolocation: Geolocation, public translate: TranslateService,
+    private diagnostic: Diagnostic, public platform: Platform) {
+    this.wellcomeOk = localStorage.getItem(WELCOME);
+    if (!this.wellcomeOk) {
+      this.wellcomeOk = "FALSE";
+    }
+    console.log("HomePage: ", this.wellcomeOk)
+  }
+
+  checkLocation() {
+    this.platform.ready().then((readySource) => {
+      this.diagnostic.isLocationEnabled().then(
+        (isAvailable) => {
+          console.log('Is available? ' + isAvailable);
+          alert('Is available? ' + isAvailable);
+          this.isAvailable=isAvailable;
+        }).catch((e) => {
+          console.log(e);
+          alert(JSON.stringify(e));
+        });
+
+
+    });
+  }
+
+  wellcomeAcept() {
+    localStorage.setItem(WELCOME, "TRUE");
+    this.wellcomeOk = "TRUE";
+  }
 
   loadMap(lat, lng) {
+
     let styledMapType = new google.maps.StyledMapType(
       [
         { elementType: 'geometry', stylers: [{ color: '#242f3e' }] },
@@ -253,8 +286,9 @@ export class HomePage {
 
   changeAvailability() {
     console.log(this.isDriverAvailable);
+this.checkLocation();
 
-    if (this.isDriverAvailable == true) {
+    if (this.isAvailable && this.isDriverAvailable == true) {
 
       // get current location
       this.geolocation.getCurrentPosition().then((resp) => {
@@ -349,18 +383,18 @@ export class HomePage {
    * This method create a new status o verifid exist.
    */
   ionViewDidLoad() {
-    this.driver = JSON.parse(localStorage.getItem("currentUser"));
-    this.driver=this.driver.user;
-    console.log("ionViewDidLoad(): " + this.driver.uuid);
-    console.log("ionViewDidLoad(): " + this.driver.uuid);
-    console.log("ionViewDidLoad(): " + this.driver.profileStatus);
-    if(this.driver.profileStatus=="RGT"){
-      // this.nav.setRoot(UserPage, {
-      //         user: this.driver
-      //       });
-    }else{
+    // this.driver = JSON.parse(localStorage.getItem("currentUser"));
+    // this.driver=this.driver.user;
+    // console.log("ionViewDidLoad(): " + this.driver.uuid);
+    // console.log("ionViewDidLoad(): " + this.driver.uuid);
+    // console.log("ionViewDidLoad(): " + this.driver.profileStatus);
+    // if(this.driver.profileStatus=="RGT"){
+    //   // this.nav.setRoot(UserPage, {
+    //   //         user: this.driver
+    //   //       });
+    // }else{
 
-    }
+    // }
     // this.driverService.registerStatus(this.driver.uuid).subscribe(result => {
     //   console.log(result);
     // }, error => {

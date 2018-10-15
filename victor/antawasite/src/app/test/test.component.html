@@ -1,29 +1,47 @@
 <div class="main-content">
-  <div class="container-fluid">
+    <div class="container-fluid">
 
-     <br/><br/><br/><br/><br/>
-      <div class="row">
+        <br /><br /><br /><br /><br />
 
-
-          <div class="col-md-12">
-              <div class="card">
-
-                  <div class="header">
-                      <h4 class="title">Prueba</h4>
-                  </div>
-                  <div class="card-body">
-                    1. ?????? <br/>
-                    2. ?????? <br/>
-                    3. ?????? <br/>
-                    4. ?????? <br/>
-                    <br/>   
-                    <button type="button" 
-                    class="btn btn-warning btn-sm" (click)="enviarValidacion('param')">OK</button>
+        <div *ngIf="evaluation" class="row">
 
 
-</div>
-</div>
-</div>
-</div>
-</div>
+            <div class="col-md-12">
+                <div *ngIf="evaluation.status=='SNV'" class="card">
+
+                    <div class="header">
+                        <h4 class="title">"Test Psicológico"</h4>
+
+                        <label> {{evaluation.user.names}}</label>
+
+                    </div>
+                    <div class="card-body">
+                        1. ?????? <br />
+                        2. ?????? <br />
+                        3. ?????? <br />
+                        4. ?????? <br />
+                        <br />
+                        <button type="button" class="btn btn-warning btn-sm" (click)="enviarValidacion()">OK</button>
+
+
+                    </div>
+                </div>
+                <div *ngIf="evaluation.status!='SNV'" class="card">
+
+                    <div class="header">
+                        <h4 class="title">"Test Psicológico"</h4>
+
+                        <label> {{evaluation.user.names}}</label>
+
+                    </div>
+                    <div class="card-body">
+                        Tu test fue calificado.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="!evaluation" class="row">
+            algo salió mal...
+        </div>
+    </div>
 </div>

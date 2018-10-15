@@ -15,6 +15,8 @@ export let UPDATE_OK="UPDATE_OK";
 export let UPDATE_WAIT="UPDATE_WAIT";
 export let NO_CONNECT="NO_CONNECT";
 export let WAIT="P_WAIT";
+export let WELCOME="WELCOMEAPP";
 
-export let API_URL = "http://localhost:8080";
-export let SERV_URL = "http://localhost:8102";
+export let API_URL = "http://10.11.240.23:8080";
+export let PLATFORM_URL = "http://10.11.240.23:4200";
+export let SERV_URL = "http://10.11.240.23:8102";

@@ -74,6 +74,27 @@ public class UserController {
 			return respuesta;
 		}
 	}
+	
+	@RequestMapping(value = "/updateProfileStatus", method = RequestMethod.POST)
+	public ResponseObject<?> updateProfileStatus(@RequestBody UserProfile userProfile) {
+		ResponseObject<UserProfile> respuesta = new ResponseObject<>();
+		try {
+			UserProfile up=userProfileService.findById(userProfile.getId());
+			up.setStatus(userProfile.getStatus());	
+			userProfileService.saveAndFlush(up);
+			respuesta.setResponse(up);
+			return respuesta;
+		} catch (ServiceException e) {
+			respuesta.setMessage(e.getMessage());
+			respuesta.setStatus(HttpStatus.CONFLICT);
+			return respuesta;
+		} catch (Exception e) {
+			respuesta.setMessage("Error saving document");
+			respuesta.setStatus(HttpStatus.CONFLICT);
+			e.printStackTrace();
+			return respuesta;
+		}
+	}
 
 	@RequestMapping(value = "/sendtovalid", method = RequestMethod.POST)
 	public ResponseObject<?> updateUserInformation(@RequestParam(value = "id") Long id) {

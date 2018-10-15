@@ -1,7 +1,21 @@
-<ion-content>
-  <div id="map" style="height: 100%;width:100%;"></div>
+<ion-content class="homeDriverPage">
+  <div *ngIf="wellcomeOk=='TRUE'" id="map" style="height: 100%;width:100%;"></div>
+  <div *ngIf="wellcomeOk=='FALSE'" class="welcomePage">
+    <ion-slides pager>
+      <ion-slide>
+        <ion-toolbar>
+        </ion-toolbar>
+        <img src="assets/img/complete.png" class="slide-image" />
+        <h2 class="slide-title">{{'WELLCOME' | translate}} !!</h2>
+        <button ion-button large clear icon-end color="primary" (click)="wellcomeAcept()">
+          {{'CONTINUE' | translate}} 
+          <ion-icon name="arrow-forward"></ion-icon>
+        </button>
+      </ion-slide>
+    </ion-slides>
+  </div>
 </ion-content>
-<ion-footer>
+<ion-footer *ngIf="wellcomeOk=='TRUE'">
   <ion-item>
     <ion-avatar item-left>
       <img src="{{ (driver)?.photoURL}}">
@@ -14,15 +28,18 @@
   <ion-row>
     <ion-col>
       <button ion-button clear (click)="goWallet()">
-        <ion-icon name="card"></ion-icon>&nbsp;{{'WALLET' | translate}}</button>
+        <ion-icon name="card"></ion-icon>&nbsp;{{'WALLET' | translate}}
+      </button>
     </ion-col>
     <ion-col>
       <button ion-button clear (click)="goHistory()">
-        <ion-icon name="clock"></ion-icon>&nbsp;{{'HISTORY' | translate}}</button>
+        <ion-icon name="clock"></ion-icon>&nbsp;{{'HISTORY' | translate}}
+      </button>
     </ion-col>
     <ion-col>
       <button ion-button clear (click)="goProfile()">
-        <ion-icon name="contact"></ion-icon>&nbsp;{{'PROFILE' | translate}}</button>
+        <ion-icon name="contact"></ion-icon>&nbsp;{{'PROFILE' | translate}}
+      </button>
     </ion-col>
   </ion-row>
 </ion-footer>

@@ -77,8 +77,8 @@ public class UserServiceImpl implements UserService {
 			up.setStatus(StatusEnum.REGISTERED.getCode());
 			userProfileRepository.save(up);
 
-			//mailSender.sendMail("antawa@info.com", u.getUsername(), "Registro AntawaGo",
-			//		"Welcome to the jungle " + u.getNames() + " " + u.getLastNames() + ", we've got fun and games...");
+			mailSender.sendMail("antawa@info.com", u.getUsername(), "Registro AntawaGo",
+					"Welcome to the jungle " + u.getNames() + " " + u.getLastNames() + ", we've got fun and games...");
 			return up;
 		} catch (Exception e) {
 			throw new ServiceException("Error trying save user", e);

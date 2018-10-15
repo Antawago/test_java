@@ -49,12 +49,12 @@ public interface UserDocumentRepository extends JpaRepository<UserDocument, Long
 	@Query("select ud.id from UserDocument ud where ud.docType=:docType and ud.user.id =:id")
 	Long findIdByTypeAndId(@Param("docType") String docType, @Param("id") Long id);
 
-	List<UserDocument> findByUserId(Long id);
+	List<UserDocument> findByUserIdOrderById(Long id);
 	
 	@Query("select ud.content from UserDocument ud where ud.id =:id")
 	String findDocumentContent(@Param("id") Long id);
 	
-	@Query("select ud from UserDocument ud where ud.status=:status and ud.user.id =:id")
+	@Query("select ud from UserDocument ud where ud.status=:status and ud.user.id =:id order by ud.id")
 	List<UserDocument> findByUserIdAndStatus(@Param("status") String status, @Param("id") Long id);
 
 }

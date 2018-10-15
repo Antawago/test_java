@@ -212,9 +212,9 @@ public class AccountController {
 			@RequestParam(value = "uuid") String uuid) {
 		ResponseObject<UserProfile> respuesta = new ResponseObject<>();
 		try {
-			uuid=uuid.replace("\"", "");
-			System.out.println("getUserProfile: "+uuid);
-			
+			uuid = uuid.replace("\"", "");
+			System.out.println("getUserProfile: " + uuid);
+
 			User user = userService.findByUUID(uuid);
 			if (user == null) {
 				respuesta.setMessage("No user register");
@@ -228,11 +228,36 @@ public class AccountController {
 				up = userProfileService.createNewUserProfile(uuid, profile);
 				respuesta.setMessage("WELCOME_NEW_PROFILE");
 			}
-			
+
 			respuesta.setResponse(up);
 			return respuesta;
 		} catch (Exception e) {
 			respuesta.setMessage("Error update information");
+			respuesta.setStatus(HttpStatus.CONFLICT);
+			e.printStackTrace();
+			return respuesta;
+		}
+	}
+
+	@RequestMapping(value = "/getUser", method = RequestMethod.GET)
+	public ResponseObject<?> getUser(@RequestParam(value = "uuid") String uuid) {
+		ResponseObject<User> respuesta = new ResponseObject<>();
+		try {
+			uuid = uuid.replace("\"", "");
+			System.out.println("getUser: " + uuid);
+
+			User user = userService.findByUUID(uuid);
+			if (user == null) {
+				respuesta.setMessage("No user register");
+				respuesta.setStatus(HttpStatus.NO_CONTENT);
+
+				return respuesta;
+			}
+
+			respuesta.setResponse(user);
+			return respuesta;
+		} catch (Exception e) {
+			respuesta.setMessage("Error get user information");
 			respuesta.setStatus(HttpStatus.CONFLICT);
 			e.printStackTrace();
 			return respuesta;

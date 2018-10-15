@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController } from 'ionic-angular';
-import { UUID, OK, UPDATE_OK } from '../../services/constants';
+import { UUID, OK, UPDATE_OK, PLATFORM_URL } from '../../services/constants';
 import { ToolsService } from '../../services/tools-service';
 import { DriverService } from '../../services/driver-service';
 import { DriverTypePage } from '../driver-type/driver-type';
@@ -9,6 +9,7 @@ import { UserDocument } from '../../model/userDocument';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { ViewFilePage } from '../view-file/view-file';
 import { LoginPage } from '../login/login';
+import { HomePage } from '../home/home';
 
 
 @Component({
@@ -28,6 +29,7 @@ export class RegisterInformationPage {
   pdfFile: any;
   documentsError: any;
   canChangeType: boolean = true;
+  urlTest: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public loadingCtrl: LoadingController,
     public toolsService: ToolsService, public driverService: DriverService, private camera: Camera) {
@@ -36,21 +38,29 @@ export class RegisterInformationPage {
     this.documents = [];
 
     let promise = this.driverService.getDriver(localStorage.getItem(UUID));
+    this.urlTest = PLATFORM_URL + "/test/" + localStorage.getItem(UUID);
+    console.log(localStorage.getItem(UUID));
     Promise.resolve(promise)
       .then((data) => {
-       
+
         let info = JSON.parse(JSON.stringify(data));
         if (info.status == 'OK') {
           this.driverService.setDriver(info.response);
           this.driverProfile = this.driverService.getDriverInfo();
           if (this.driverProfile.status == 'DEV') {
             this.getObservarions(this.driverProfile.user.id);
+          }else  if (this.driverProfile.status == 'ACT') {
+            this.navCtrl.setRoot(HomePage);
           }
-        }else if (info.status == 'NO_CONTENT') {
+        } else if (info.status == 'NO_CONTENT') {
           this.navCtrl.setRoot(LoginPage);
         }
       });
 
+  }
+
+  openTest() {
+    window.open(this.urlTest, '_system');
   }
 
   private getObservarions(idUser: any) {
@@ -69,11 +79,11 @@ export class RegisterInformationPage {
     this.driverProfile.status = 'RGT';
   }
 
-  getPicture(documentType) {
+  getPicture(documentType: any) {
     let newFile: UserDocument = new UserDocument();
     newFile.type = documentType;
     newFile.format = 'image/jpeg';
-    newFile.uuid = JSON.parse(localStorage.getItem(UUID));
+    newFile.uuid = localStorage.getItem(UUID);
     newFile.upk = this.driverProfile.user.id;
 
     let options: CameraOptions = {
@@ -126,7 +136,7 @@ export class RegisterInformationPage {
 
   chooseDocs(documentType) {
     this.documentType = documentType;
-    
+
     document.getElementById('docsUpload').click();
   }
 
@@ -150,15 +160,15 @@ export class RegisterInformationPage {
         loading.dismiss();
         return;
       }
-      
-      newFile.type = this.documentType;  
+
+      newFile.type = this.documentType;
       newFile.upk = this.driverProfile.user.id;
       newFile.format = event.target.files[0].type;
       newFile.name = event.target.files[0].name;
-      newFile.uuid = JSON.parse(localStorage.getItem(UUID));
-      
+      newFile.uuid = localStorage.getItem(UUID);
+
       newFile.size = event.target.files[0].size;
-      
+
       console.log("size ", event.target.files[0].size);
       console.log("type ", event.target.files[0].type);
       console.log("name ", event.target.files[0].name);
@@ -180,7 +190,7 @@ export class RegisterInformationPage {
       console.log(file);
       // Create a root reference
       // let storageRef = firebase.storage().ref();
-     
+
       this.documents.push(newFile);
       this.toolsService.showToast('UPLOAD_FILE');
       loading.dismiss();
@@ -208,7 +218,7 @@ export class RegisterInformationPage {
   }
   sendValid() {
     if (this.validateDocuments()) {
-      console.log("DOcumentos: ", this.documents);
+      // console.log("DOcumentos: ", this.documents);
       let promise = this.driverService.updateDriveDocumentsAndSendValidation(this.documents);
       Promise.resolve(promise)
         .then((data) => {

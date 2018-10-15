@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Data } from '../../../providers/data';
 import { AccountService } from '../../../service/account.service';
+import { DomSanitizer } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -12,13 +14,16 @@ export class StepsComponent implements OnInit {
     user: any;
     profile: any;
     image: any;
+    document: any;
     documents: any;
     validations: any;
     radioModel: any;
     idUserProfile: any;
-    noAceptList:any=["Archivo no legible","Archivo dañado","No corresponde al dato solicitado"];
+    noAceptList: any = ["Archivo no legible", "Archivo dañado", "No corresponde al dato solicitado"];
+    viewImage: boolean = false;
+    viewDocument: boolean = false;
 
-    constructor(private accountService: AccountService, private data: Data) { }
+    constructor( public router: Router,private accountService: AccountService, private data: Data, private sanitizer: DomSanitizer) { }
 
     ngOnInit() {
         let infoJson = JSON.parse(JSON.stringify(this.data.storage));
@@ -33,22 +38,24 @@ export class StepsComponent implements OnInit {
             let dataJSON = JSON.parse(JSON.stringify(data));
             this.documents = dataJSON.response.documents;
             this.validations = dataJSON.response.userEvaluations;
-            //this.image = dataJSON.response[0].content;
-        });
-        // subscribe(data => {
-        //   this.image=data.response[0].content;
-        //   console.log("DATA INFOR USER", this.image);
-        //   // data.response;
-        // }, err => {
-        //   if (err.status == 0) {
-        //     //this.toolsService.showAlert("NO_CONNECT");
-        //   }
-        //   console.log("the error..!!!:err:", err);
 
-        // });
+        });
+
     }
 
-    
+
+    validUser(): void {
+        let infoJson = JSON.parse(JSON.stringify(this.data.storage));
+        infoJson.status='ACT';
+        let serv = this.accountService.updateStatusUserProfile(infoJson);
+        Promise.resolve(serv).then(data => {
+            console.log(data);
+            this.router.navigate(['/validation']);
+        });
+
+    }
+
+
 
     validation(valid) {
 
@@ -72,25 +79,25 @@ export class StepsComponent implements OnInit {
 
     getDocumentsContent(doc: any) {
         let serv = this.accountService.getDocumentsContent(doc.id);
+        this.viewImage = false;
+        this.viewDocument = false;
         Promise.resolve(serv).then(data => {
             let result = JSON.parse(JSON.stringify(data));
-            console.log("doc.formatFile ",doc.formatFile );
+            console.log("doc.formatFile ", doc.formatFile);
             if (result.status == 'OK') {
-                if('image/jpeg'==doc.formatFile){
-                    this.image=result.response;
-                }else{
-                    window.open("data:" + doc.formatFile + ";base64, " + result.response);
+                if ('image/jpeg' == doc.formatFile) {
+                    this.image = result.response;
+                    this.viewImage = true;
+                } else {
+                    this.document = "<object style=\"width:100%;height:300px;\" data=\"data:application/pdf;base64," + result.response + "\" type=\"application/pdf\"></object>";
+                    this.viewDocument = true;
                 }
-                
-              
-               
             }
         });
     }
 
     changeStatusDocumentTmp(status: any, doc: any) {
-    
-        doc.comment="";
+        doc.comment = "";
         doc.status = status;
     }
 

@@ -55,7 +55,7 @@ export class RegisterPage implements OnInit {
         if (result.status == 'OK') {
           this.toolsService.showAlert('REGISTER_OK');
           localStorage.setItem(USER_PROFILE, JSON.stringify(result.response));
-          localStorage.setItem(UUID, JSON.stringify(result.response.user.uuid));
+          localStorage.setItem(UUID, result.response.user.uuid);
           this.nav.setRoot(DriverTypePage);
         } else {
           this.toolsService.showAlert(result.message);

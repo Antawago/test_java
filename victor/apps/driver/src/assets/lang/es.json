@@ -60,6 +60,6 @@
     "VALIDATION_OBSERVATION":"Observaciones",
     "LIC":"Licencia",
     "MAT":"Matrícula",
-    "UNDEFINED_ERROR":"Undefined error"
-
+    "UNDEFINED_ERROR":"Undefined error",
+    "WELLCOME":"Bienvenido"
 }

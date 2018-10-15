@@ -23,7 +23,8 @@
     </ion-item>
 
     <ion-list>
-      <ion-item *ngFor="let doc of documentsError" style="white-space: nowrap;">{{doc.docType | translate}} - {{doc.comment}}</ion-item>
+      <ion-item *ngFor="let doc of documentsError" style="white-space: nowrap;">{{doc.docType | translate}} -
+        {{doc.comment}}</ion-item>
     </ion-list>
 
   </div>
@@ -113,9 +114,9 @@
         </button>
       </ion-fab-list>
     </ion-fab>
-    <form ngNoForm >
+    <form ngNoForm>
       <input id="docsUpload" name="file" type="file" (change)="uploadDocs($event)">
-      <input type="reset" id="formDocUpdate"/>
+      <input type="reset" id="formDocUpdate" />
     </form>
   </div>
 
@@ -153,7 +154,7 @@
         </ion-col>
       </ion-row>
 
-      
+
     </ion-grid>
 
 
@@ -168,6 +169,6 @@
     translate}}</button>
   <button *ngIf="driverProfile.status=='DEV'" ion-button round color="secondary" (click)="changeProfileStatus()">{{'UP_DOCUMENTS'
     | translate}}</button>
-  <button *ngIf="driverProfile.status=='VLD'" ion-button round color="secondary" href="#" onclick="window.open('https://www.123test.com', '_system');">{{'TEST_EVAL'
-        | translate}}</button>
+  <button *ngIf="driverProfile.status=='VLD'" ion-button round color="secondary" href="#" (click)="openTest()">{{'TEST_EVAL'
+    | translate}}</button>
 </ion-footer>

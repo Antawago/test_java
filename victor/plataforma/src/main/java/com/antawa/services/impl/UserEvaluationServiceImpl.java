@@ -6,8 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.antawa.enums.EvaluationStatusEnum;
+import com.antawa.enums.ParameterEvaluationEnum;
 import com.antawa.enums.UserProfileStatusEnum;
+import com.antawa.model.EvaluationParameter;
+import com.antawa.model.User;
 import com.antawa.model.UserEvaluation;
+import com.antawa.model.repository.EvaluationParameterRepository;
 import com.antawa.model.repository.UserEvaluationRepository;
 import com.antawa.model.repository.UserProfileRepository;
 import com.antawa.services.UserEvaluationService;
@@ -22,6 +26,9 @@ public class UserEvaluationServiceImpl implements UserEvaluationService {
 	@Autowired
 	private UserProfileRepository userProfileRepository;
 
+	@Autowired
+	private EvaluationParameterRepository evaluationParameterRepository;
+
 	@Override
 	public List<UserEvaluation> findByUserId(Long idUser) {
 		return userEvaluationRepository.findByUserId(idUser);
@@ -34,5 +41,20 @@ public class UserEvaluationServiceImpl implements UserEvaluationService {
 					documentStructureVO.getUpk());
 		}
 		userEvaluationRepository.updateStatusById(documentStructureVO.getStatus(), documentStructureVO.getIdDoc());
+	}
+
+	@Override
+	public UserEvaluation findByUserIdType(Long userId, ParameterEvaluationEnum param) {
+		return userEvaluationRepository.findByUserIdAndEvaluationParameterCode(userId, param.getCode());
+	}
+
+	@Override
+	public UserEvaluation createByUserIdType(User user, ParameterEvaluationEnum param) {
+		EvaluationParameter ep = evaluationParameterRepository.findByCode(param.getCode());
+		UserEvaluation ue = new UserEvaluation();
+		ue.setEvaluationParameter(ep);
+		ue.setUser(user);
+		userEvaluationRepository.saveAndFlush(ue);
+		return ue;
 	}
 }

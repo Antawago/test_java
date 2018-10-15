@@ -25,4 +25,12 @@ public interface EvaluationParameterRepository extends JpaRepository<EvaluationP
 	 * @throws QueryException
 	 */
 	List<EvaluationParameter> findByStatus(String status) throws QueryException;
+	
+	/**
+	 * 
+	 * @param code
+	 * @return
+	 * @throws QueryException
+	 */
+	EvaluationParameter findByCode(String code) throws QueryException;
 }

@@ -39,7 +39,7 @@ export class DriverService extends AbstractService {
 
   setDriver(driver) {
     this.driverProfile = JSON.stringify(driver);
-    console.log("setDriver", this.driverProfile);
+    //console.log("setDriver", this.driverProfile);
     localStorage.setItem(USER_PROFILE, this.driverProfile);
   }
 

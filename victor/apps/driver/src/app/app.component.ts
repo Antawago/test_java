@@ -42,11 +42,15 @@ export class MyApp {
         
         if (currentUser.status == USER_STATUS_ACT) {
           this.nav.setRoot(HomePage);
+          return;
+          
         }
         if (currentUser.type == USER_TYPE_NAN) {
           this.nav.setRoot(DriverTypePage);
+          return;
         } else {
           this.nav.setRoot(RegisterInformationPage);
+          return;
         }
       } 
 

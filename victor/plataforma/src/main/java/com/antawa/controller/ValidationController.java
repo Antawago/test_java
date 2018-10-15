@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.antawa.enums.EvaluationStatusEnum;
+import com.antawa.enums.ParameterEvaluationEnum;
 import com.antawa.enums.ProfileEnum;
 import com.antawa.enums.StatusEnum;
+import com.antawa.model.User;
 import com.antawa.model.UserDocument;
 import com.antawa.model.UserEvaluation;
 import com.antawa.model.UserProfile;
@@ -26,6 +28,7 @@ import com.antawa.model.repository.UserDocumentRepository;
 import com.antawa.services.UserDocumentService;
 import com.antawa.services.UserEvaluationService;
 import com.antawa.services.UserProfileService;
+import com.antawa.services.UserService;
 import com.antawa.util.ResponseObject;
 import com.antawa.vo.DocumentStructureVO;
 import com.antawa.vo.DriverValidationVO;
@@ -55,6 +58,9 @@ public class ValidationController {
 	@Autowired
 	private UserEvaluationService userEvaluationService;
 
+	@Autowired
+	private UserService userService;
+
 	/**
 	 * Thsasdasaas
 	 * 
@@ -83,8 +89,38 @@ public class ValidationController {
 		try {
 			System.out.println("id");
 			System.out.println(id);
-			List<UserDocument> result = documentRepository.findByUserId(id);
+			List<UserDocument> result = documentRepository.findByUserIdOrderById(id);
 			respuesta.setResponse(result);
+			return respuesta;
+		} catch (Exception e) {
+			e.printStackTrace();
+			respuesta.setMessage("Error obtain information");
+			respuesta.setStatus(HttpStatus.CONFLICT);
+			return respuesta;
+		}
+	}
+
+	@RequestMapping(value = "/getTestEvaluationParameter", method = RequestMethod.GET)
+	public ResponseObject<?> getTestEvaluationParameter(@RequestParam(value = "uuid") String uuid) {
+		ResponseObject<UserEvaluation> respuesta = new ResponseObject<>();
+		try {
+			System.out.println("uuid: " + uuid);
+			User user = userService.findByUUID(uuid);
+			if (user == null) {
+				respuesta.setMessage("User not exist");
+				respuesta.setStatus(HttpStatus.CONFLICT);
+			} else {
+				UserEvaluation ue = userEvaluationService.findByUserIdType(user.getId(),
+						ParameterEvaluationEnum.PSYCHOLOGICAL_TEST);
+				if (ue == null) {
+					System.out.println("No hay");
+					ue = userEvaluationService.createByUserIdType(user, ParameterEvaluationEnum.PSYCHOLOGICAL_TEST);
+				} else {
+					System.out.println("Si hay");
+					ue.setUser(user);
+				}
+				respuesta.setResponse(ue);
+			}
 			return respuesta;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -103,7 +139,7 @@ public class ValidationController {
 
 			DriverValidationVO resp = new DriverValidationVO();
 
-			List<UserDocument> documents = documentRepository.findByUserId(id);
+			List<UserDocument> documents = documentRepository.findByUserIdOrderById(id);
 			resp.setDocuments(documents);
 
 			List<UserEvaluation> userEvaluations = evaluationService.findByUserId(id);
